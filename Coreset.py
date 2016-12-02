@@ -118,13 +118,13 @@ class Coreset:
                                                                  self.corepair_num)]
             self.core_powerlist.reverse()
 
-    def get_Coreset(self):
+    def get_Coresetlist(self):
         return self.core_freqlist, self.core_powerlist
 
-    def get_Coreset_period(self):
+    def get_Coreset_freqlist(self):
         return self.core_freqlist
 
-    def get_Coreset_power(self):
+    def get_Coreset_powerlist(self):
         return self.core_powerlist
 
     def delete_Coreset(self):
@@ -143,7 +143,8 @@ class Coreset:
     def print_Coresetname(self):
         print("Coresetname {0}" .format(self.name))
 
-t = Coreset("coreset1")
-t.set_Coreset_Conf()
-t.create_Coresets()
-t.print_Coreset_Status()
+#t = Coreset("coreset1")
+#t.set_Coreset_Conf()
+#t.create_Coresets()
+#print t.get_Coreset_freq()
+#t.print_Coreset_Status()

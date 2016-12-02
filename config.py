@@ -2,9 +2,7 @@
 # *-* encoding: utf-8 *-*
 
 
-STATIC_PERSENTAGE = 0.4  # Default value of static power persantage per dynamic power
-DEEP_SLEEP_PERSENTAGE = 0.2
-TASK_NUM = 200
+TASK_NUM = 1
 MAX_WCET_VALUE = 1
 MIN_WCET_VALUE = 1
 MAX_PERIOD_VALUE = 500
@@ -17,12 +15,39 @@ LITTLECORE_POWER = [227, 103, 58]
 
 BIGCORE_FREQ_HAS_SLEEP = [1.0, 0.7, 0.4, 0.00001]
 LITTLECORE_FREQ_HAS_SLEEP = [0.237, 0.153, 0.102, 0.00001]
-BIGCORE_POWER_HAS_SLEEP = [2241, 938, 457,
-                           round(DEEP_SLEEP_PERSENTAGE*BIGCORE_POWER[len(BIGCORE_POWER)-1]*1.0/STATIC_PERSENTAGE, 3)]
-LITTLECORE_POWER_HAS_SLEEP = [227, 103, 58,
-                              round(DEEP_SLEEP_PERSENTAGE*LITTLECORE_POWER[len(LITTLECORE_POWER)-1]*1.0/STATIC_PERSENTAGE, 3)]
+BIGCORE_POWER_HAS_SLEEP = [2241, 938, 457, 0]
+LITTLECORE_POWER_HAS_SLEEP = [227, 103, 58, 0]
+
+BIGCORE_SLEEP_POWER = 50
+LITTLECORE_SLEEP_POWER = 5
+
+SLEEP_CHANGE_TIMES = 50
+SLEEP_CHANGE_TIME_OV = 0.002
+BIGCORE_SLEEP_CHANGE_POWER_OV = 100
+LITTLECORE_SLEEP_CHANGE_POWER_OV = 10
 
 BIGCORE_NUM = 3
 LITTLECORE_NUM = 3
 CORE_NUM = BIGCORE_NUM + LITTLECORE_NUM
 CORE_PAIR_NUM = min(BIGCORE_NUM, LITTLECORE_NUM)
+
+
+def gcd(a, b):
+    while b > 0:
+        a, b = b, a%b
+    return a
+
+
+def lcm(a, b):
+    return a*b/gcd(a, b)
+
+
+def lcm_iter(list_a):
+    if len(list_a) == 0:
+        print("Error: Number of Tasks is Zero")
+        exit()
+    else:
+        l = 1
+        for i in range(len(list_a)):
+            l = lcm(list_a[i], l)
+    return l

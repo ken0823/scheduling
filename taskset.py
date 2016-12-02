@@ -51,13 +51,13 @@ class Taskset:
                   .format(option))
             exit()
 
-    def get_Taskset(self):
+    def get_Tasksetlist(self):
         return self.wcetlist, self.periodlist
 
-    def get_Taskset_wcet(self):
+    def get_Taskset_wcetlist(self):
         return self.wcetlist
 
-    def get_Taskset_period(self):
+    def get_Taskset_periodlist(self):
         return self.periodlist
 
     def delete_Taskset(self):
@@ -77,7 +77,8 @@ class Taskset:
     def print_Tasksetname(self):
         print("Tasksetname:  {0}" .format(self.name))
 
-t = Taskset("taskset1")
-t.set_Taskset_Conf()
-t.create_Taskset()
-t.print_Taskset_Status()
+#t = Taskset("taskset1")
+#t.set_Taskset_Conf()
+#t.create_Taskset()
+#t.print_Taskset_Status()
+
