@@ -9,40 +9,54 @@ class Coreset:
 
     def __init__(self, name=""):
         self.name = name
+        self.core_num = None
+        self.corepair_num = None
 
-    def set_Coreset_Conf(self, option=1):
-        if option == 1:
+    def set_CoresetConf(self, option=1, biglittle_model=None, core_num=None,
+                        bigcore_num=None, littlecore_num=None,
+                        bigcore_freq=None, littlecore_freq=None,
+                        bigcore_power=None, littlecore_power=None):
+        if option == 0:
+            self.biglittle_model = biglittle_model
+            self.core_num = core_num
+            self.bigcore_num = bigcore_num
+            self.littlecore_num = littlecore_num
+            self.bigcore_freq = bigcore_freq
+            self.littlecore_freq = littlecore_freq
+            self.bigcore_power = bigcore_power
+            self.littlecore_power = littlecore_power
+        elif option == 1:
             self.biglittle_model = 1
+            self.core_num = config.CORE_NUM
             self.bigcore_num = config.BIGCORE_NUM
             self.littlecore_num = config.LITTLECORE_NUM
-            self.core_num = config.CORE_NUM
             self.bigcore_freq = config.BIGCORE_FREQ_HAS_SLEEP
             self.littlecore_freq = config.LITTLECORE_FREQ_HAS_SLEEP
             self.bigcore_power = config.BIGCORE_POWER_HAS_SLEEP
             self.littlecore_power = config.LITTLECORE_POWER_HAS_SLEEP
         elif option == 2:
             self.biglittle_model = 2
+            self.core_num = config.CORE_NUM
             self.bigcore_num = config.BIGCORE_NUM
             self.littlecore_num = config.LITTLECORE_NUM
-            self.core_num = config.CORE_NUM
             self.bigcore_freq = config.BIGCORE_FREQ
             self.littlecore_freq = config.LITTLECORE_FREQ
             self.bigcore_power = config.BIGCORE_POWER
             self.littlecore_power = config.LITTLECORE_POWER
         elif option == 3:
             self.biglittle_model = 3
+            self.core_num = config.CORE_PAIR_NUM
             self.bigcore_num = config.BIGCORE_NUM
             self.littlecore_num = config.LITTLECORE_NUM
-            self.corepair_num = config.CORE_PAIR_NUM
             self.bigcore_freq = config.BIGCORE_FREQ_HAS_SLEEP
             self.littlecore_freq = config.LITTLECORE_FREQ_HAS_SLEEP
             self.bigcore_power = config.BIGCORE_POWER_HAS_SLEEP
             self.littlecore_power = config.LITTLECORE_POWER_HAS_SLEEP
         elif option == 4:
             self.biglittle_model = 4
+            self.core_num = config.CORE_PAIR_NUM
             self.bigcore_num = config.BIGCORE_NUM
             self.littlecore_num = config.LITTLECORE_NUM
-            self.corepair_num = config.CORE_PAIR_NUM
             self.bigcore_freq = config.BIGCORE_FREQ
             self.littlecore_freq = config.LITTLECORE_FREQ
             self.bigcore_power = config.BIGCORE_POWER
@@ -60,9 +74,6 @@ class Coreset:
 
     def set_core_num(self, newvalue):
         self.core_num = newvalue
-
-    def set_corepair_num(self, newvalue):
-        self.corepair_num = newvalue
 
     def set_bigcore_freq(self, newlist):
         self.bigcore_freq = newlist
@@ -111,37 +122,46 @@ class Coreset:
             self.corepair_power = self.bigcore_power + self.littlecore_power
             self.core_freqlist = [list(i) for i in
                                   combinations_with_replacement(self.corepair_freq,
-                                                                self.corepair_num)]
+                                                                self.core_num)]
             self.core_freqlist.reverse()
             self.core_powerlist = [list(i) for i in
                                    combinations_with_replacement(self.corepair_power,
-                                                                 self.corepair_num)]
+                                                                 self.core_num)]
             self.core_powerlist.reverse()
 
-    def get_Coresetlist(self):
+    def get_CoresetList(self):
         return self.core_freqlist, self.core_powerlist
 
-    def get_Coreset_freqlist(self):
+    def get_CoresetFreqList(self):
         return self.core_freqlist
 
-    def get_Coreset_powerlist(self):
+    def get_CoresetPowerList(self):
         return self.core_powerlist
+
+    def get_CoresetCoreNum(self):
+        return self.core_num
+
+    def get_CoresetBigCoreNum(self):
+        return self.bigcore_num
+
+    def get_CoresetLittleCoreNum(self):
+        return self.littlecore_num
 
     def delete_Coreset(self):
         self.core_freqlist = []
         self.core_powerlist = []
 
-    def print_Coreset_Status(self):
-        print("Coresetname {0}" .format(self.name))
-        print("biglittle_model:  {0}, bigcore_num {1} littlecore_num {2}"
+    def print_CoresetStatus(self):
+        print("CoresetName: {0}" .format(self.name))
+        print("biglittle_model: {0}, bigcore_num {1}, littlecore_num {2}"
               .format(self.biglittle_model, self.bigcore_num, self.littlecore_num))
         print("core_freqlist")
         print self.core_freqlist
         print("core_powerlist")
         print self.core_powerlist
 
-    def print_Coresetname(self):
-        print("Coresetname {0}" .format(self.name))
+    def print_CoresetName(self):
+        print("CoresetName: {0}" .format(self.name))
 
 #t = Coreset("coreset1")
 #t.set_Coreset_Conf()
