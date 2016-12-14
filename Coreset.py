@@ -162,9 +162,9 @@ class Coreset:
 
     def print_CoresetName(self):
         print("CoresetName: {0}" .format(self.name))
-
-#t = Coreset("coreset1")
-#t.set_Coreset_Conf()
-#t.create_Coresets()
-#print t.get_Coreset_freq()
-#t.print_Coreset_Status()
+'''
+t = Coreset("coreset1")
+t.set_CoresetConf()
+t.create_Coresets()
+print t.get_CoresetFreqList()
+t.print_CoresetStatus()'''

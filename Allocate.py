@@ -32,6 +32,7 @@ class Allocate:
         self.wcetlist = wcetlist
         self.periodlist = periodlist
         task_load = sum(wcetlist[j]*1.0/periodlist[j] for j in range(self.task_num))
+        print task_load
         start = time.clock()
 
         for i in range(len(self.core_freqlist)):
@@ -361,10 +362,10 @@ class Allocate:
         self.elapsed_time = time.clock() - start
 
     def get_AllocateArray(self):
-        self.allocate_array = np.array(self.best_allocate)
-        np.reshape(self.allocate_array, (-1, ))
-
-
+        self.allocate_array = np.array(self.best_allocate, dtype=int)
+        self.allocate_array = np.reshape(self.allocate_array, (-1, self.core_num))
+        self.allocate_array = (self.allocate_array).transpose()
+        return self.allocate_array
 
     def print_SolutionStatus(self):
         print("solve status: {0}" .format(self.solve_flag))
@@ -375,12 +376,20 @@ class Allocate:
 
 t = taskset.Taskset("taskset1")
 t.set_TasksetConf(1)
-t.create_Taskset()
+t.create_Taskset(2)
+#t.print_TasksetStatus()
 c = Coreset.Coreset("coreset1")
 c.set_CoresetConf()
 c.create_Coresets()
+#c.print_CoresetStatus()
 a = Allocate("allocate1")
-a.allcate_all_search_static_noconsider(c.get_CoresetCoreNum(), c.get_CoresetBigCoreNum(), c.get_CoresetLittleCoreNum(),
+a.allcate_heuristic_static_consider(c.get_CoresetCoreNum(), c.get_CoresetBigCoreNum(), c.get_CoresetLittleCoreNum(),
                                     c.get_CoresetFreqList(), c.get_CoresetPowerList(), t.get_TaskNum(),
                                     t.get_TasksetWcetList(), t.get_TasksetPeriodList())
+ary = a.get_AllocateArray()
+print ary
+
+#lis = a.get_best_allocate()
+#print lis[1]
+
 a.print_SolutionStatus()
