@@ -4,6 +4,7 @@
 import config
 import time
 import numpy as np
+import math
 from gurobipy import *
 import taskset
 import Coreset
@@ -79,10 +80,15 @@ class Allocate:
                         m.addConstr(quicksum(x[i, j]
                                     for i in range(config.CORE_NUM)) == 1, "c0")
 
-                    for i in range(self.core_num):
+                    ''' for i in range(self.core_num):
                         m.addConstr(quicksum(self.wcetlist[j]*x[i,j]*1.0/(freq_conf[i]*self.periodlist[j])
                                     for j in range(self.task_num)) + \
-                                    config.SLEEP_CHANGE_TIMES*config.SLEEP_CHANGE_TIME_OV <= 1.0, "c1")
+                                    config.SLEEP_CHANGE_TIMES*config.SLEEP_CHANGE_TIME_OV <= 1.0, "c1")'''
+
+                    for i in range(self.core_num):
+                        m.addConstr(quicksum(self.wcetlist[j]*x[i,j]*1.0/(freq_conf[i]*self.periodlist[j]) + \
+                                             ((quicksum(self.periodlist[j]*x[i,j]*1.0 for j in range(self.task_num))/self.periodlist[j])*config.SLEEP_CHANGE_TIME_OV
+                                    for j in range(self.task_num))/freq_conf[i])<= 1.0, "c1")
 
                     m.update()
 
@@ -376,14 +382,14 @@ class Allocate:
 
 t = taskset.Taskset("taskset1")
 t.set_TasksetConf(1)
-t.create_Taskset(2)
+t.create_Taskset(option=3)
 #t.print_TasksetStatus()
 c = Coreset.Coreset("coreset1")
 c.set_CoresetConf()
 c.create_Coresets()
 #c.print_CoresetStatus()
 a = Allocate("allocate1")
-a.allcate_heuristic_static_consider(c.get_CoresetCoreNum(), c.get_CoresetBigCoreNum(), c.get_CoresetLittleCoreNum(),
+a.allcate_all_search_static_noconsider(c.get_CoresetCoreNum(), c.get_CoresetBigCoreNum(), c.get_CoresetLittleCoreNum(),
                                     c.get_CoresetFreqList(), c.get_CoresetPowerList(), t.get_TaskNum(),
                                     t.get_TasksetWcetList(), t.get_TasksetPeriodList())
 ary = a.get_AllocateArray()
