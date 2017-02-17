@@ -6,6 +6,7 @@ import config
 import TaskQueue
 import DVFS
 import taskset
+import config
 
 
 class Scheduler:
@@ -238,7 +239,7 @@ class Scheduler:
             print "ready_queue"
             print ready_queue
             '''
-            power = df.la_edf(queue_list, ready_queue_id,
+            power = df.la3_edf(queue_list, ready_queue_id,
                               current_time, self.hyperperiod,
                               self.core_freq, self.core_power)
             self.power = self.power + power
@@ -375,8 +376,7 @@ t.print_TasksetStatus()
 print ""
 print "----laEDF----"
 shed4 = Scheduler("schd4")
-shed4.set_SchedulerConf([1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.45, 0.4],
-                        [2241, 1868, 1723, 1616, 1510, 1401, 1340, 1320, 1270, 1198, 1151, 1142],
+shed4.set_SchedulerConf(config.CortexA15_freq,config.CortexA15_power,
                         t.get_TasksetPeriodList(), t.get_TasksetWcetList(), [1,1])
 #shed3.set_SchedulerConf([1.0, 0.8, 0.6],[2241,938,457],[6,6,12],[1,1,1],[1,1])
 shed4.run_LAEDFScheduler()
@@ -386,9 +386,7 @@ shed4.print_activepower()
 print ""
 print "----laEDF + SCA-DVFS----"
 shed = Scheduler("schd")
-shed.set_SchedulerConf([1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.45, 0.4],
-                       [2241, 1868, 1723, 1616, 1510, 1401, 1340, 1320, 1270, 1198, 1151, 1142],
-                       t.get_TasksetPeriodList(), t.get_TasksetWcetList(), [1,1])
+shed.set_SchedulerConf(config.CortexA15_freq,config.CortexA15_power,                                      t.get_TasksetPeriodList(), t.get_TasksetWcetList(), [1,1])
 #shed.set_SchedulerConf([1.0, 0.5, 0.25], [2241, 938, 457],
  #                       [8, 40, 40, 10, 30], [1,5,2,1,5], [1,1])
 #shed.set_SchedulerConf([1.0, 0.8, 0.6],[2241,938,457],[6,4,12],[1,1,7],[1,1])
@@ -399,8 +397,7 @@ shed.print_activepower()
 print ""
 print "----SGlaedf----"
 shed2 = Scheduler("schd2")
-shed2.set_SchedulerConf([1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.45, 0.4],
-                        [2241, 1868, 1723, 1616, 1510, 1401, 1340, 1320, 1270, 1198, 1151, 1142],
+shed2.set_SchedulerConf(config.CortexA15_freq,config.CortexA15_power,
                         t.get_TasksetPeriodList(), t.get_TasksetWcetList(), [1,1])
 #shed2.set_SchedulerConf([1.0, 0.8, 0.6],[2241,938,457],[6,4,12],[1,1,1],[1,1])
 shed2.run_SCLAEDF2Scheduler()
@@ -410,8 +407,7 @@ shed2.print_activepower()
 print ""
 print "----SGlaedf + SCA-DVFS----"
 shed3 = Scheduler("schd3")
-shed3.set_SchedulerConf([1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.45, 0.4],
-                        [2241, 1868, 1723, 1616, 1510, 1401, 1340, 1320, 1270, 1198, 1151, 1142],
+shed3.set_SchedulerConf(config.CortexA15_freq,config.CortexA15_power,
                         t.get_TasksetPeriodList(), t.get_TasksetWcetList(), [1,1])
 #shed3.set_SchedulerConf([1.0, 0.8, 0.6],[2241,938,457],[6,6,12],[1,1,1],[1,1])
 shed3.run_SCLAEDFScheduler()
